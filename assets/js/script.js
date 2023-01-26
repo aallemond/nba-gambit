@@ -10,23 +10,57 @@ scoreThree.textContent = "Card 3"
 scoreFour.textContent = "Card 4"
 scoreFive.textContent = "Card 5"
 
-// function liveGamePull() {
-//     const options = {
-//         method: 'GET',
-//         headers: {
-//             'X-RapidAPI-Key': 'df399e6de9mshfa4855a7e4f9273p1c1b08jsnb6f096830827',
-//             'X-RapidAPI-Host': 'odds.p.rapidapi.com'
-//         }
-//     };
 
 
-//     fetch('https://odds.p.rapidapi.com/v4/sports/basketball_nba/scores?daysFrom=3', options)
-//         .then(response => response.json())
-//         .then(response => console.log(response))
-//         .catch(err => console.error(err));
+// Gets live game data from the API-NBA
+function getLiveGames(){
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': 'e4262cffb3msh1a488567c412cd4p185ce0jsndeb4af0e0827',
+            'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
+        }
+    };
+    
+    fetch('https://api-nba-v1.p.rapidapi.com/games?live=all', options)
+        .then(function(response){
+            console.log(response.status)
+            return response.json();
+        })
 
+        .then(function(data){
+            displayGames(data);
+        })
+    
+  
+  
+    }
 
+    // Function to display live game data in the appropriate div
+    function displayGames(teamData) {
+        console.log (teamData)
+        
+        var teamBoxEl = document.getElementById('teamBox');
+        
+        // For loop to go through the returned json data and get the names and logos of each team
+        var gamesList = teamData.response;
+        for (let i = 0; i < gamesList.length; i++) {
+            var homeTeam = gamesList[i].teams.home.name;
+            var homeLogo = gamesList[i].teams.home.logo;
+            var visitorTeam = gamesList[i].teams.visitors.name;
+            var visitorLogo = gamesList[i].teams.visitors.logo;
+            console.log (homeTeam, homeLogo, visitorTeam, visitorLogo )
 
-// }
+            var homeTeamNameEl = document.createElement("li")
+            teamBoxEl.textContent = homeTeam;
+            teamBoxEl.appendChild(homeTeamNameEl);
 
-// liveGamePull()
+            var visitorTeamNameEl = document.createElement("li")
+            teamBoxEl.textContent = visitorTeam;
+            teamBoxEl.appendChild(visitorTeamNameEl, visitorLogo);
+
+        }
+
+    }
+    
+    getLiveGames()
