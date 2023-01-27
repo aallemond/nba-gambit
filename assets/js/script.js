@@ -1,9 +1,8 @@
 
 // Live Game Attributes API Get Function
 
-function liveGamePull() {
 
-    // API Definition - GET
+function liveGamePull() {
 
     const apiNBA = {
         method: 'GET',
@@ -12,7 +11,7 @@ function liveGamePull() {
             'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
         }
     };
-    
+
     fetch('https://api-nba-v1.p.rapidapi.com/games?live=all', apiNBA)
         .then((response) => {
             if (response.ok) {
@@ -72,3 +71,4 @@ function liveGamePull() {
 }
 // Automatically starts the function
 liveGamePull()
+
