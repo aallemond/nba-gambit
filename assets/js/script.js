@@ -1,4 +1,3 @@
-
 // Live Game Attributes API Get Function
 
 function liveGamePull() {
