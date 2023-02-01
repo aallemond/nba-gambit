@@ -36,7 +36,7 @@ NBA-GAMBIT is intended to be used by game bettors to track their bets with ongoi
 
 The following page previews has been added to further exhibit the functionality - 
 
-![NBA-GAMBIT SAMPLE](./assets/images/screenshot1.png)
+![NBA-GAMBIT SAMPLE](./assets/images/screenshot2.png)
 
 
 

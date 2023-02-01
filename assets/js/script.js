@@ -172,7 +172,7 @@ const gameData = {};
                 i++;
             }
             const numGames = document.querySelectorAll('.invisible')
-            if(numGames.length == 5)
+            if(numGames.length == 9)
             {
                 const message = document.createElement("div")
                 const textnode = document.createTextNode("There are no live games on right now");
