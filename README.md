@@ -10,14 +10,14 @@ It shall contain the following features and information:
 
 <ul>
 <li>The page shall populate live games within its cards to show the following:</li>
-<ol>
+<ul>
 <li>Current Quarter</li> 
 <li>Time left in the quarter</li>
 <li>Team Names</li>
 <li>Team Logos</li>
 <li>Live Scores</li>
 <li>Live Odds</li>
-</ol>
+</ul>
 <li>A refresh scores button at the top of the page to update the current game, scores, and odds.</li>
 </ul>
 
