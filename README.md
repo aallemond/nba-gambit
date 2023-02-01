@@ -1,6 +1,6 @@
 # NBA-GAMBIT
 
-## Deployed URL: 
+## Deployed URL: https://aallemond.github.io/nba-gambit/
 
 ## Description
 
