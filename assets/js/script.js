@@ -1,7 +1,7 @@
 // Live Game Attributes API Get Function
 const gameData = {};
 
-    const apiNba = {
+    /*const apiNba = {
         method: 'GET',
         headers: {
             'X-RapidAPI-Key': 'df399e6de9mshfa4855a7e4f9273p1c1b08jsnb6f096830827',
@@ -58,7 +58,7 @@ const gameData = {};
             console.log(gameData);
             //debugger;
             Promise.all([a,b]).then(() => displayInfo(gameData)); 
-
+    */
         displayInfo();
         function displayInfo(gameData){
             
@@ -77,6 +77,7 @@ const gameData = {};
             const awayTeamOdds = document.querySelectorAll(".away-odds")
             const homeTeamOdds = document.querySelectorAll(".home-odds")
             const timeInGame = document.querySelectorAll(".game-time")
+            const gameCards = document.querySelectorAll(".invisible")
             let i = 0;
             for (const key in gameData) {
                 
@@ -158,6 +159,7 @@ const gameData = {};
                 awayTeamOdds[i].append(awayOdds)
                 homeTeamOdds[i].append(homeOdds)
                 timeInGame[i].append(gameTime)
+                gameCards[i].classList.remove("invisible");
                 i++;
             }
             
