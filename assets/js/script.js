@@ -1,6 +1,7 @@
 //Object to contain game data
 const gameData = {};
 
+
 //Call to API-NBA
 const apiNba = {
     method: 'GET',
@@ -9,6 +10,7 @@ const apiNba = {
         'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
     }
 };
+
     
 const a = fetch('https://api-nba-v1.p.rapidapi.com/games?live=all', apiNba)
     .then(function (response) {
@@ -69,6 +71,7 @@ function displayInfo(gameData){
     console.log(gameData);
 
             
+
     var count = 9; //This is to keep track of how many of the divs are not filled with data
     
     //creates arrays of all the elements in the game cards, index = the card its is pointing to
@@ -82,7 +85,6 @@ function displayInfo(gameData){
     const homeTeamOdds = document.querySelectorAll(".home-odds")
     const timeInGame = document.querySelectorAll(".game-time")
     const gameCards = document.querySelectorAll(".invisible")
-            
 
     let i = 0; //allows for indexing of element arrays
     for (const key in gameData) {
