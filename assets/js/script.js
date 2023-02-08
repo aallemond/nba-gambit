@@ -72,7 +72,7 @@ function displayInfo(gameData){
 
             
 
-    var count = 9; //This is to keep track of how many of the divs are not filled with data
+   
     
     //creates arrays of all the elements in the game cards, index = the card its is pointing to
     const scoreDisplayAway = document.querySelectorAll(".visitor")
@@ -86,6 +86,7 @@ function displayInfo(gameData){
     const timeInGame = document.querySelectorAll(".game-time")
     const gameCards = document.querySelectorAll(".invisible")
 
+    
     let i = 0; //allows for indexing of element arrays
     for (const key in gameData) {
         
@@ -182,20 +183,11 @@ function displayInfo(gameData){
         awayTeamOdds[i].append(awayOdds)
         homeTeamOdds[i].append(homeOdds)
         timeInGame[i].append(gameTime)
+        debugger;
         gameCards[i].classList.remove("invisible");
-        count--;
         i++;
     }
     //If no game cards are populated a message will appear instead
-    console.log(count)
-    if(count == 9)
-    {
-        {
-            var message = document.createElement("div")
-            var textnode = document.createTextNode("There are no live games on right now");
-            message.appendChild(textnode);
-            document.getElementById("card-list").appendChild(message);
-        }
-    }
+    
     
 }
