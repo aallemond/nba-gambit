@@ -183,7 +183,7 @@ function displayInfo(gameData){
         awayTeamOdds[i].append(awayOdds)
         homeTeamOdds[i].append(homeOdds)
         timeInGame[i].append(gameTime)
-        debugger;
+        
         gameCards[i].classList.remove("invisible");
         i++;
     }
