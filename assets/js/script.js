@@ -6,7 +6,7 @@ const gameData = {};
 const apiNba = {
     method: 'GET',
     headers: {
-        'X-RapidAPI-Key': 'df399e6de9mshfa4855a7e4f9273p1c1b08jsnb6f096830827',
+        'X-RapidAPI-Key':'e4262cffb3msh1a488567c412cd4p185ce0jsndeb4af0e0827',
         'X-RapidAPI-Host': 'api-nba-v1.p.rapidapi.com'
     }
 };
@@ -32,6 +32,8 @@ const a = fetch('https://api-nba-v1.p.rapidapi.com/games?live=all', apiNba)
             gameData[gameName].apiNba = game;
         }
     });
+
+    
 
 //Call to Live Sports Odds
 const liveSportsOdds = {
