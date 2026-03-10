@@ -92,6 +92,7 @@ function displayInfo(gameData) {
     for (const key in gameData) {
 
         const game = gameData[key];
+        console.log(key, game)
 
         // ✅ Skip if either API didn't return data
         if (!game.apiNba || !game.liveSportsOdds) {
