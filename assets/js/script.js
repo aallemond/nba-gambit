@@ -55,23 +55,23 @@ function formatGameTime(game) {
 
   const start = new Date(game.date);
 
-  const gameDateLocal = start.toLocaleDateString();
-  const todayLocal = new Date().toLocaleDateString();
+  // shift forward to avoid UTC midnight rollover
+  const adjusted = new Date(start.getTime() + (8 * 60 * 60 * 1000));
 
+  const today = new Date();
   const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const tomorrowLocal = tomorrow.toLocaleDateString();
+  tomorrow.setDate(today.getDate() + 1);
 
   let dateLabel;
 
-  if (gameDateLocal === todayLocal) {
+  if (adjusted.toDateString() === today.toDateString()) {
     dateLabel = "Today";
   }
-  else if (gameDateLocal === tomorrowLocal) {
+  else if (adjusted.toDateString() === tomorrow.toDateString()) {
     dateLabel = "Tomorrow";
   }
   else {
-    dateLabel = start.toLocaleDateString([], {
+    dateLabel = adjusted.toLocaleDateString([], {
       month: "short",
       day: "numeric"
     });
@@ -257,6 +257,4 @@ loadGames();
 
 // refresh every 30 seconds
 
-setInterval(() => {
-  location.reload();
-}, 30000);
+setInterval(loadGames, 30000);
