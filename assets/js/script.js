@@ -39,7 +39,7 @@ const teamLogos = {
 function normalizeTeam(name) {
   return name
     .replace("LA ", "Los Angeles ")
-    .replace("Trail Blazers", "Portland Trail Blazers")
+    .replace("Trailblazers", "Trail Blazers")
     .trim();
 }
 
