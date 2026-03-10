@@ -1,167 +1,167 @@
-const gameData = {}
+const gameData = {};
 
 // ---------------- NBA API ----------------
 
 const nbaOptions = {
-method: "GET",
-headers: {
-"X-RapidAPI-Key": "YOUR_KEY",
-"X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
-}
-}
+    method: "GET",
+    headers: {
+        "X-RapidAPI-Key": "YOUR_KEY",
+        "X-RapidAPI-Host": "api-nba-v1.p.rapidapi.com"
+    }
+};
 
 const fetchNbaGames = fetch(
-"https://api-nba-v1.p.rapidapi.com/games?live=all",
-nbaOptions
+    "https://api-nba-v1.p.rapidapi.com/games?live=all",
+    nbaOptions
 )
 .then(res => res.json())
 .then(data => {
 
-data.response.forEach(game => {
+    data.response.forEach(game => {
 
-let gameName
+        let gameName;
 
-if (game.teams.home.name === "LA Clippers") {
-gameName = "Los Angeles Clippers__" + game.teams.visitors.name
-}
-else if (game.teams.visitors.name === "LA Clippers") {
-gameName = game.teams.home.name + "__Los Angeles Clippers"
-}
-else {
-gameName = game.teams.home.name + "__" + game.teams.visitors.name
-}
+        if (game.teams.home.name === "LA Clippers") {
+            gameName = "Los Angeles Clippers__" + game.teams.visitors.name;
+        }
+        else if (game.teams.visitors.name === "LA Clippers") {
+            gameName = game.teams.home.name + "__Los Angeles Clippers";
+        }
+        else {
+            gameName = game.teams.home.name + "__" + game.teams.visitors.name;
+        }
 
-gameData[gameName] = gameData[gameName] || {}
-gameData[gameName].apiNba = game
+        gameData[gameName] = gameData[gameName] || {};
+        gameData[gameName].apiNba = game;
 
-})
+    });
 
-})
+});
 
 // ---------------- ODDS API ----------------
 
 const oddsOptions = {
-method: "GET",
-headers: {
-"X-RapidAPI-Key": "YOUR_KEY",
-"X-RapidAPI-Host": "odds.p.rapidapi.com"
-}
-}
+    method: "GET",
+    headers: {
+        "X-RapidAPI-Key": "YOUR_KEY",
+        "X-RapidAPI-Host": "odds.p.rapidapi.com"
+    }
+};
 
 const fetchOdds = fetch(
-"https://odds.p.rapidapi.com/v4/sports/basketball_nba/odds?regions=us&markets=h2h&oddsFormat=american",
-oddsOptions
+    "https://odds.p.rapidapi.com/v4/sports/basketball_nba/odds?regions=us&markets=h2h&oddsFormat=american",
+    oddsOptions
 )
 .then(res => res.json())
 .then(data => {
 
-data.forEach(game => {
+    data.forEach(game => {
 
-const gameName = game.home_team + "__" + game.away_team
+        const gameName = game.home_team + "__" + game.away_team;
 
-gameData[gameName] = gameData[gameName] || {}
-gameData[gameName].liveSportsOdds = game
+        gameData[gameName] = gameData[gameName] || {};
+        gameData[gameName].liveSportsOdds = game;
 
-})
+    });
 
-})
+});
 
-// ---------------- COMBINE APIs ----------------
+// ---------------- COMBINE APIS ----------------
 
 Promise.all([fetchNbaGames, fetchOdds]).then(() => {
-displayInfo(gameData)
-})
+    displayInfo(gameData);
+});
 
 // ---------------- DISPLAY FUNCTION ----------------
 
 function displayInfo(gameData) {
 
-const scoreDisplayAway = document.querySelectorAll(".visitor")
-const scoreDisplayHome = document.querySelectorAll(".home")
-const logoDisplayHome = document.querySelectorAll(".homelogo")
-const logoDisplayAway = document.querySelectorAll(".awaylogo")
-const teamNameDisplayHome = document.querySelectorAll(".teamname-home")
-const teamNameDisplayAway = document.querySelectorAll(".teamname-away")
-const awayTeamOdds = document.querySelectorAll(".away-odds")
-const homeTeamOdds = document.querySelectorAll(".home-odds")
-const timeInGame = document.querySelectorAll(".game-time")
-const gameCards = document.querySelectorAll(".invisible")
+    const scoreDisplayAway = document.querySelectorAll(".visitor");
+    const scoreDisplayHome = document.querySelectorAll(".home");
+    const logoDisplayHome = document.querySelectorAll(".homelogo");
+    const logoDisplayAway = document.querySelectorAll(".awaylogo");
+    const teamNameDisplayHome = document.querySelectorAll(".teamname-home");
+    const teamNameDisplayAway = document.querySelectorAll(".teamname-away");
+    const awayTeamOdds = document.querySelectorAll(".away-odds");
+    const homeTeamOdds = document.querySelectorAll(".home-odds");
+    const timeInGame = document.querySelectorAll(".game-time");
+    const gameCards = document.querySelectorAll(".invisible");
 
-let i = 0
+    let i = 0;
 
-for (const key in gameData) {
+    for (const key in gameData) {
 
-const game = gameData[key]
+        const game = gameData[key];
 
-// safety check
-if (!game.apiNba || !game.liveSportsOdds) continue
+        // ✅ Skip if either API didn't return data
+        if (!game.apiNba || !game.liveSportsOdds) {
+            continue;
+        }
 
-const teamNameHome = game.apiNba.teams.home.name
-const teamNameAway = game.apiNba.teams.visitors.name
+        // ✅ Prevent card overflow
+        if (!teamNameDisplayHome[i]) {
+            break;
+        }
 
-const pointsHome = game.apiNba.scores.home.points
-const pointsAway = game.apiNba.scores.visitors.points
+        const teamNameHome = game.apiNba.teams.home.name;
+        const teamNameAway = game.apiNba.teams.visitors.name;
 
-const homeLogo = game.apiNba.teams.home.logo
-const awayLogo = game.apiNba.teams.visitors.logo
+        const pointsHome = game.apiNba.scores.home.points;
+        const pointsAway = game.apiNba.scores.visitors.points;
 
-// -------- ODDS --------
+        const homeLogo = game.apiNba.teams.home.logo;
+        const awayLogo = game.apiNba.teams.visitors.logo;
 
-let draftKingsKey
+        // ---------------- FIND DRAFTKINGS ----------------
 
-for (let j = 0; j < game.liveSportsOdds.bookmakers.length; j++) {
+        const draftKingsKey = game.liveSportsOdds.bookmakers.findIndex(
+            b => b.key === "draftkings"
+        );
 
-if (game.liveSportsOdds.bookmakers[j].key === "draftkings") {
-draftKingsKey = j
-break
-}
+        if (draftKingsKey === -1) continue;
 
-}
+        const outcomes =
+            game.liveSportsOdds.bookmakers[draftKingsKey]
+            .markets[0].outcomes;
 
-if (draftKingsKey === undefined) continue
+        let awayOdds = outcomes[0].price;
+        let homeOdds = outcomes[1].price;
 
-const outcomes =
-game.liveSportsOdds.bookmakers[draftKingsKey].markets[0].outcomes
+        if (awayOdds > 0) awayOdds = "+" + awayOdds;
+        if (homeOdds > 0) homeOdds = "+" + homeOdds;
 
-let awayOdds = outcomes[0].price
-let homeOdds = outcomes[1].price
+        // ---------------- GAME TIME ----------------
 
-if (awayOdds > 0) awayOdds = "+" + awayOdds
-if (homeOdds > 0) homeOdds = "+" + homeOdds
+        let clock = game.apiNba.status.clock;
+        if (!clock) clock = "End";
 
-// -------- GAME TIME --------
+        const quarter = game.apiNba.periods.current;
 
-let clock = game.apiNba.status.clock
-if (!clock) clock = "End"
+        let gameTime = clock + " Q" + quarter;
 
-const quarter = game.apiNba.periods.current
+        if (game.apiNba.status.halftime) {
+            gameTime = "Halftime";
+        }
 
-let gameTime = clock + " Q" + quarter
+        // ---------------- UPDATE DOM ----------------
 
-if (game.apiNba.status.halftime) {
-gameTime = "Halftime"
-}
+        teamNameDisplayHome[i].textContent = teamNameHome;
+        teamNameDisplayAway[i].textContent = teamNameAway;
 
-// -------- UPDATE DOM --------
+        logoDisplayHome[i].src = homeLogo;
+        logoDisplayAway[i].src = awayLogo;
 
-teamNameDisplayHome[i].textContent = teamNameHome
-teamNameDisplayAway[i].textContent = teamNameAway
+        scoreDisplayHome[i].textContent = pointsHome;
+        scoreDisplayAway[i].textContent = pointsAway;
 
-logoDisplayHome[i].src = homeLogo
-logoDisplayAway[i].src = awayLogo
+        homeTeamOdds[i].append(homeOdds);
+        awayTeamOdds[i].append(awayOdds);
 
-scoreDisplayHome[i].textContent = pointsHome
-scoreDisplayAway[i].textContent = pointsAway
+        timeInGame[i].textContent = gameTime;
 
-homeTeamOdds[i].append(homeOdds)
-awayTeamOdds[i].append(awayOdds)
+        gameCards[i].classList.remove("invisible");
 
-timeInGame[i].textContent = gameTime
-
-gameCards[i].classList.remove("invisible")
-
-i++
-
-}
+        i++;
+    }
 
 }
