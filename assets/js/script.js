@@ -95,9 +95,15 @@ function displayInfo(gameData) {
         console.log(key, game)
 
         // ✅ Skip if either API didn't return data
-        if (!game.apiNba || !game.liveSportsOdds) {
-            continue;
-        }
+       if (
+    !game.apiNba ||
+    !game.liveSportsOdds ||
+    !game.apiNba.teams ||
+    !game.apiNba.teams.home ||
+    !game.apiNba.teams.visitors
+) {
+    continue;
+}
 
         // ✅ Prevent card overflow
         if (!teamNameDisplayHome[i]) {
