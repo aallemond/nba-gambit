@@ -54,19 +54,20 @@ function formatGameTime(game) {
   }
 
   const start = new Date(game.date);
-  const now = new Date();
 
-  const diffDays = Math.floor(
-    (start.setHours(0,0,0,0) - now.setHours(0,0,0,0)) /
-    (1000 * 60 * 60 * 24)
-  );
+  const gameDateLocal = start.toLocaleDateString();
+  const todayLocal = new Date().toLocaleDateString();
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowLocal = tomorrow.toLocaleDateString();
 
   let dateLabel;
 
-  if (diffDays === 0) {
+  if (gameDateLocal === todayLocal) {
     dateLabel = "Today";
   }
-  else if (diffDays === 1) {
+  else if (gameDateLocal === tomorrowLocal) {
     dateLabel = "Tomorrow";
   }
   else {
@@ -76,7 +77,7 @@ function formatGameTime(game) {
     });
   }
 
-  const timeLabel = new Date(game.date).toLocaleTimeString([], {
+  const timeLabel = start.toLocaleTimeString([], {
     hour: "numeric",
     minute: "2-digit"
   });
@@ -86,15 +87,23 @@ function formatGameTime(game) {
 
 // ---------- build date range ----------
 
+function formatDateLocal(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
 const today = new Date();
 const yesterday = new Date(today);
 const tomorrow = new Date(today);
 
 yesterday.setDate(today.getDate() - 1);
-tomorrow.setDate(today.getDate() + 1);
+tomorrow.setDate(today.getDate() + 2); // expand window slightly
 
-const start = yesterday.toISOString().split("T")[0];
-const end = tomorrow.toISOString().split("T")[0];
+const start = formatDateLocal(yesterday);
+const end = formatDateLocal(tomorrow);
 
 // ---------- load APIs ----------
 
