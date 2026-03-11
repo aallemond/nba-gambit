@@ -156,6 +156,17 @@ function renderGames(nbaGames, oddsGames) {
     const home = normalizeTeam(game.home_team.full_name);
     const away = normalizeTeam(game.visitor_team.full_name);
 
+    const gameDate = new Date(game.datetime || game.date);
+    const today = new Date();
+
+    const gameDay = gameDate.toDateString();
+    const todayDay = today.toDateString();
+
+    // skip completed games from previous days
+    if (game.status === "Final" && gameDay !== todayDay) {
+     return;
+    }
+
     const oddsGame = oddsGames.find(o =>
       normalizeTeam(o.home_team) === home &&
       normalizeTeam(o.away_team) === away
