@@ -50,12 +50,14 @@ function formatGameTime(game) {
   }
 
   if (game.status === "In Progress") {
-    return `${game.time || ""} Q${game.period || ""}`;
-  }
+
+    const quarter = game.period || "";
+    const clock = game.time || "";
+
+  return `🔴 Q${quarter} ${clock}`;  }
 
   const start = new Date(game.date);
 
-  // shift forward to avoid UTC midnight rollover
   const adjusted = new Date(start.getTime() + (8 * 60 * 60 * 1000));
 
   const today = new Date();
