@@ -56,9 +56,9 @@ function formatGameTime(game) {
 
   return `🔴 Q${quarter} ${clock}`;  }
 
-  const start = new Date(game.date);
+const start = new Date(game.datetime || game.date);
 
-  const adjusted = new Date(start.getTime() + (8 * 60 * 60 * 1000));
+const adjusted = start;
 
   const today = new Date();
   const tomorrow = new Date();
@@ -145,6 +145,9 @@ async function loadGames() {
 
 function renderGames(nbaGames, oddsGames) {
 
+ cardList.innerHTML = "";   // clear previous cards
+
+
   const liveGames = [];
   const upcomingGames = [];
 
@@ -183,21 +186,24 @@ function renderGames(nbaGames, oddsGames) {
 
     const gameObj = {
 
-      home,
-      away,
+  home,
+  away,
 
-      homeLogo: teamLogos[home],
-      awayLogo: teamLogos[away],
+  homeLogo: teamLogos[home],
+  awayLogo: teamLogos[away],
 
-      homeScore: game.home_team_score ?? "-",
-      awayScore: game.visitor_team_score ?? "-",
+  homeScore: game.home_team_score ?? "-",
+  awayScore: game.visitor_team_score ?? "-",
 
-      homeOdds,
-      awayOdds,
+  homeOdds,
+  awayOdds,
 
-      gameTime: formatGameTime(game)
+  gameTime: formatGameTime(game),
 
-    };
+  startTime: new Date(game.date),   // used for sorting
+  status: game.status
+
+};
 
     if (game.status === "In Progress") {
       liveGames.push(gameObj);
@@ -209,6 +215,17 @@ function renderGames(nbaGames, oddsGames) {
 
   const gamesToRender =
     liveGames.length > 0 ? liveGames : upcomingGames;
+
+  gamesToRender.sort((a, b) => {
+
+  // live games first
+  if (a.status === "In Progress") return -1;
+  if (b.status === "In Progress") return 1;
+
+  // then by start time
+  return a.startTime - b.startTime;
+
+});
 
   gamesToRender.forEach(createCard);
 
